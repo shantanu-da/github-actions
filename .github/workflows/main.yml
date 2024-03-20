@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+'on':
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Clone mvn-project Repository
+        run: >-
+          git clone -b shantanu --single-branch
+          https://github.com/shantanu-da/mvn-project.git
+      - name: Build MySQL Image
+        run: >-
+          docker build -t
+          us-central1-docker.pkg.dev/learning-414204/demo/demo-app-mysql:${{
+          github.run_number }}-${{ github.sha }} -f
+          /var/lib/jenkins/workspace/cicd-branch/Dockerfile.mysql mvn-project/.
+      - name: Log in to GCR with GCP credentials
+        run: |
+          echo $GCR_CREDENTIALS > gcp-key.json
+          gcloud auth activate-service-account --key-file=gcp-key.json
+          rm gcp-key.json
+      - name: Push MySQL Image to GCR
+        run: >-
+          docker push
+          us-central1-docker.pkg.dev/learning-414204/demo/demo-app-mysql:${{
+          github.run_number }}-${{ github.sha }}
+      - name: Build DemoApp Image
+        run: >-
+          docker build -t
+          us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
+          github.run_number }}-${{ github.sha }} -f
+          /var/lib/jenkins/workspace/cicd-branch/Dockerfile mvn-project/.
+      - name: Push DemoApp Image to GCR
+        run: >-
+          docker push
+          us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
+          github.run_number }}-${{ github.sha }}
+      - name: Clone Helm Chart Repository
+        run: >-
+          git clone
+          https://shantanu-da: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@github.com/shantanu-da/helm-chart.git
+          temp_repo
+      - name: Update Helm Chart Values
+        run: >
+          sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}/"
+          temp_repo/demo-app/values.yaml
+
+          sed -i "91s/tag:.*/tag: mysql-${{ github.run_number }}-${{ github.sha
+          }}/" temp_repo/demo-app/values.yaml
+
+          cd temp_repo
+
+          git add .
+
+          git commit -m "Update image tag"
+
+          git push origin main
