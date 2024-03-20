@@ -23,7 +23,12 @@ jobs:
           mvn-project/Dockerfile.mysql mvn-project
       - name: Log in to GCR with GCP credentials
         run:  
-          gcloud auth activate-service-account --key-file=mvn-project/gcp-key.json
+          gcloud auth activate-service-account --key-file=mvn-project/gcp-key.json  
+      - name: Install gcloud CLI
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          project_id: learning-414204  # Replace with your project ID
+          service_account_key: ${{ secrets.GCR_CREDENTIALS }} 
       - name: Push MySQL Image to GCR
         run: >-
           docker push
