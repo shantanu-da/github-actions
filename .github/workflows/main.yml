@@ -49,6 +49,8 @@ jobs:
           github.run_number }}-${{ github.sha }}
       - name: Clone Helm Chart Repository
         run: git clone -b shantanu https://shantanu-da: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@github.com/shantanu-da/helm-chart.git temp_repo
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
       - name: Update Helm Chart Values
         run: |
           sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}/" temp_repo/demo-app/values.yaml; \
