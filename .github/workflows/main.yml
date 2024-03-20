@@ -20,7 +20,7 @@ jobs:
           docker build -t
           us-central1-docker.pkg.dev/learning-414204/demo/demo-app-mysql:${{
           github.run_number }}-${{ github.sha }} -f
-          /var/lib/jenkins/workspace/cicd-branch/Dockerfile.mysql mvn-project/.
+          mvn-project/Dockerfile.mysql mvn-project
       - name: Log in to GCR with GCP credentials
         run: |
           echo $GCR_CREDENTIALS > gcp-key.json
@@ -36,7 +36,7 @@ jobs:
           docker build -t
           us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
           github.run_number }}-${{ github.sha }} -f
-          /var/lib/jenkins/workspace/cicd-branch/Dockerfile mvn-project/.
+          mvn-project/Dockerfile mvn-project
       - name: Push DemoApp Image to GCR
         run: >-
           docker push
