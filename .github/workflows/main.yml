@@ -1,0 +1,14 @@
+name: CI/CD Pipeline
+'on':
+  push:
+    branches:
+      - shantanu
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          repository: shantanu-da/mvn-project.git
+          ref: shantanu
