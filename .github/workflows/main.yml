@@ -1,37 +1,29 @@
 name: CI/CD Pipeline
-
-on:
+'on':
   push:
     branches:
       - shantanu
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build MySQL Image
       - name: Build MySQL Image
-        run: docker build -t shan123456/java-mysql:${{ github.run_number }}-${{ github.sha }} -f /Dockerfile.mysql .
-
-      # Log in to Docker Hub
+        run: >-
+          docker build -t shan123456/java:${{ github.run_number }}-${{
+          github.sha }} -f /Dockerfile.mysql .
       - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      # Push MySQL Image to Docker Hub
+        run: >-
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{
+          secrets.DOCKER_USERNAME }}" --password-stdin
       - name: Push MySQL Image to Docker Hub
-        run: docker push shan123456/java-mysql:${{ github.run_number }}-${{ github.sha }}
-
-      # Build DemoApp Image
+        run: 'docker push shan123456/java:${{ github.run_number }}-${{ github.sha }}'
       - name: Build DemoApp Image
-        run: docker build -t shan123456/demo-app:${{ github.run_number }}-${{ github.sha }} -f path/to/Dockerfile .
-
-      # Push DemoApp Image to Docker Hub
+        run: >-
+          docker build -t shan123456/java:${{ github.run_number }}-${{
+          github.sha }} -f Dockerfile .
       - name: Push DemoApp Image to Docker Hub
-        run: docker push shan123456/demo-app:${{ github.run_number }}-${{ github.sha }}
+        run: 'docker push shan123456/java:${{ github.run_number }}-${{ github.sha }}'
