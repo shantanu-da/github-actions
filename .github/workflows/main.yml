@@ -29,6 +29,8 @@ jobs:
         with:
           project_id: learning-414204  # Replace with your project ID
           service_account_key: ${{ secrets.GCR_CREDENTIALS }} 
+      - name: Configure Docker for us-central1
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
       - name: Push MySQL Image to GCR
         run: >-
           docker push
