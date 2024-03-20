@@ -24,11 +24,8 @@ jobs:
       - name: Log in to GCR with GCP credentials
         run: |
           echo "GCR_CREDENTIALS: ${{ secrets.GCR_CREDENTIALS }}"
-          echo "${{ secrets.GCR_CREDENTIALS }}"  > gcp-key.json
-          ls -l gcp-key.json  # Check if the file is created and its size
-          cat gcp-key.json    # Output the content of the file for debugging
-          gcloud auth activate-service-account --key-file=gcp-key.json
-          rm gcp-key.json
+          echo "${{ secrets.GCR_CREDENTIALS }}" 
+          gcloud auth activate-service-account --key-file=<(echo "${{ secrets.GCR_CREDENTIALS }}")
       - name: Push MySQL Image to GCR
         run: >-
           docker push
