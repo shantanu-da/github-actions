@@ -48,7 +48,7 @@ jobs:
           us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
           github.run_number }}-${{ github.sha }}
       - name: Clone Helm Chart Repository
-        run: git clone -b shantanu https://shantanu-da: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@github.com/shantanu-da/helm-chart.git temp_repo
+        run:  git clone --single-branch --branch shantanu https://github.com/shantanu-da/helm-chart.git temp_repo
         env:
           GH_TOKEN: ${{ secrets.TOKEN }}
           GH_USERNAME: ${{ secrets.USERNAME }}
