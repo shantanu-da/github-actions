@@ -23,7 +23,7 @@ jobs:
           mvn-project/Dockerfile.mysql mvn-project
       - name: Log in to GCR with GCP credentials
         run: |
-          echo '${{ secrets.GCR_CREDENTIALS }}' > gcp-key.json
+          echo "${{ secrets.GCR_CREDENTIALS }}" > gcp-key.json
           gcloud auth activate-service-account --key-file=gcp-key.json
           rm gcp-key.json
       - name: Push MySQL Image to GCR
