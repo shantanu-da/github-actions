@@ -50,10 +50,6 @@ jobs:
           github.run_number }}-${{ github.sha }}
       - name: Clone repo helm chart repo
         uses: actions/checkout@v2
-        env:
-          contents: read
-          packages: write
-        continue-on-error: [pull_request]
         with:
           repository: shantanu-da/helm-chart
           ref: shantanu
