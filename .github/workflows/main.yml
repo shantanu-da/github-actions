@@ -61,6 +61,10 @@ jobs:
           token: '${{ secrets.GH_PAT }}'
       - name: Update Helm Chart Values
         run: >
+          git config user.email "shantanu.datarkar@opstree.com"
+    
+          git config user.name "shantanu-da"
+          
           sed -i "s/^ *tag: .*$/tag: ${{ github.run_number }}-${{ github.sha }}/" temp_repo/demo-app/values.yaml && \
 
 
