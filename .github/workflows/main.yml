@@ -56,7 +56,7 @@ jobs:
           repository: shantanu-da/helm-chart
           ref: shantanu
           path: temp_repo
-          token: ${{ secrets.TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
           USERNAME: ${{ secrets.USERNAME }}
       - name: Update Helm Chart Values
         run: >
