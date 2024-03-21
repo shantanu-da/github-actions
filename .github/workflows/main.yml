@@ -50,15 +50,14 @@ jobs:
           github.run_number }}-${{ github.sha }}
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Clone Helm Chart Repository
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+      - name: Clone repo helm chart repo
+        uses: actions/checkout@v2
+        with:
+          repository: shantanu-da/helm-chart
+          ref: shantanu
+          path: temp_repo
+          token: ${{ secrets.TOKEN }}
           USERNAME: ${{ secrets.USERNAME }}
-        run: >
-          git clone --branch shantanu
-          https://github.com/shantanu-da/helm-chart.git temp_repo && cd
-          temp_repo && git remote set-url origin
-          https://github.com/shantanu-da/helm-chart.git
       - name: Update Helm Chart Values
         run: >
           sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}/"
