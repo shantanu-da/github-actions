@@ -6,6 +6,10 @@ name: CI/CD Pipeline
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write 
+      packages: write
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
