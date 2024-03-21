@@ -61,11 +61,11 @@ jobs:
           token: '${{ secrets.GH_PAT }}'
       - name: Update Helm Chart Values
         run: >
-          sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}"
-          temp_repo/demo-app/values.yaml && \
+          sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}" temp_repo/demo-app/values.yaml && \
 
-          sed -i "91s/tag:.*/tag: mysql-${{ github.run_number }}-${{ github.sha
-          }}" temp_repo/demo-app/values.yaml && \
+
+          sed -i "91s/tag:.*/tag: mysql-${{ github.run_number }}-${{ github.sha }}" temp_repo/demo-app/values.yaml && \
+
 
           cd temp_repo && \
 
@@ -74,6 +74,6 @@ jobs:
           git commit -m "Update image tag" && \
 
           git push origin shantanu
-        shell: '/usr/bin/bash -e {0}'
+
         env:
           CLOUDSDK_METRICS_ENVIRONMENT: github-actions-setup-gcloud
