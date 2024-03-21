@@ -52,7 +52,9 @@ jobs:
       - name: Clone Helm Chart Repository
         env:
          GH_PAT: ${{ secrets.GH_PAT }}
-        run: git clone --single-branch --branch shantanu https://shantanu-da:${{ secrets.GH_PAT }}@github.com/shantanu-da/helm-chart.git temp_repo
+        run: git remote set-url origin https://github.com/shantanu-da/helm-chart.git
+             git clone --single-branch --branch shantanu https://shantanu-da:${{ secrets.GH_PAT }}@github.com/shantanu-da/helm-chart.git temp_repo
+             cd temp_repo
       - name: Update Helm Chart Values
         run: |
           sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}/" temp_repo/demo-app/values.yaml; \
