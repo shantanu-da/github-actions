@@ -59,11 +59,13 @@ jobs:
           ref: shantanu
           path: temp_repo
           token: '${{ secrets.GH_PAT }}'
-      - name: Update Helm Chart Values
-        run: >
+      - name: Set Git user identity
+        run: |
           git config --global user.email "shantanu.datarkar@opstree.com"
           git config --global user.name "shantanu-da"
-          
+      
+      - name: Update Helm Chart Values
+        run: |
           sed -i "s/^ *tag: .*$/tag: ${{ github.run_number }}-${{ github.sha }}/" temp_repo/demo-app/values.yaml && \
 
 
