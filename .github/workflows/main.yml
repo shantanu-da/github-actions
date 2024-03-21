@@ -55,7 +55,6 @@ jobs:
           ref: shantanu
           path: temp_repo
           token: ${{ secrets.GH_PAT }}
-          USERNAME: ${{ secrets.USERNAME }}
       - name: Update Helm Chart Values
         run: >
           sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}/"
