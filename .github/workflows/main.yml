@@ -66,12 +66,10 @@ jobs:
       
       - name: Update Helm Chart Values
         run: |
-          sed -i "s/^ *tag: .*$/tag: ${{ github.run_number }}-${{ github.sha }}/" temp_repo/demo-app/values.yaml && \
+          sed -i "/^ *tag: /{s/^ *tag: .*$/tag: ${{ github.run_number }}-${{ github.sha }}/;}" temp_repo/demo-app/values.yaml && \
 
-
-          sed -i "s/^ *tag: .*$/tag: mysql-${{ github.run_number }}-${{ github.sha }}/" temp_repo/demo-app/values.yaml && \
-
-
+          sed -i "/^ *tag: /{s/^ *tag: .*$/tag: mysql-${{ github.run_number }}-${{ github.sha }}/;}" temp_repo/demo-app/values.yaml && \
+          
           cd temp_repo && \
 
           git add . && \
