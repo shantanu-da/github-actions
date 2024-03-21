@@ -49,11 +49,12 @@ jobs:
           us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
           github.run_number }}-${{ github.sha }}
       - name: Clone repo helm chart repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: shantanu-da/helm-chart
           ref: shantanu
           path: temp_repo
+          token: ${{ secrets.GH_PAT || github.token }}
       - name: Update Helm Chart Values
         run: >
           sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}/"
