@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Clone Helm Chart Repository
         env:
-          GH_PAT: '${{ secrets.GH_PAT }}'
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: >
           git clone --branch shantanu
           https://github.com/shantanu-da/helm-chart.git temp_repo && cd
