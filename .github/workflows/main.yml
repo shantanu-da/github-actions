@@ -61,10 +61,10 @@ jobs:
           token: '${{ secrets.GH_PAT }}'
       - name: Update Helm Chart Values
         run: >
-          sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}" temp_repo/demo-app/values.yaml && \
+          sed -i "s/^ *tag: .*$/tag: ${{ github.run_number }}-${{ github.sha }}/" temp_repo/demo-app/values.yaml && \
 
 
-          sed -i "91s/tag:.*/tag: mysql-${{ github.run_number }}-${{ github.sha }}" temp_repo/demo-app/values.yaml && \
+          sed -i "s/^ *tag: .*$/tag: mysql-${{ github.run_number }}-${{ github.sha }}/" temp_repo/demo-app/values.yaml && \
 
 
           cd temp_repo && \
