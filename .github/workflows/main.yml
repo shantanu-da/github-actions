@@ -48,15 +48,13 @@ jobs:
           docker push
           us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
           github.run_number }}-${{ github.sha }}
-      - name: Checkout repository
-        uses: actions/checkout@v2
       - name: Clone repo helm chart repo
         uses: actions/checkout@v2
         with:
           repository: shantanu-da/helm-chart
           ref: shantanu
           path: temp_repo
-          GH_PAT: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT }}
           USERNAME: ${{ secrets.USERNAME }}
       - name: Update Helm Chart Values
         run: >
