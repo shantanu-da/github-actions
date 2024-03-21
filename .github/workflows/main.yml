@@ -12,17 +12,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Clone mvn-project Repository
-        run: >-
+        run: >
           git clone -b shantanu --single-branch
           https://github.com/shantanu-da/mvn-project.git
       - name: Build MySQL Image
-        run: >-
+        run: >
           docker build -t
           us-central1-docker.pkg.dev/learning-414204/demo/demo-app-mysql:${{
           github.run_number }}-${{ github.sha }} -f mvn-project/Dockerfile.mysql
           mvn-project
       - name: Log in to GCR with GCP credentials
-        run: >-
+        run: >
           gcloud auth activate-service-account
           --key-file=mvn-project/gcp-key.json
       - name: Install gcloud CLI
@@ -33,40 +33,54 @@ jobs:
       - name: Configure Docker for us-central1
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
       - name: Push MySQL Image to GCR
-        run: >-
+        run: >
           docker push
           us-central1-docker.pkg.dev/learning-414204/demo/demo-app-mysql:${{
           github.run_number }}-${{ github.sha }}
       - name: Build DemoApp Image
-        run: >-
+        run: >
           docker build -t
           us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
           github.run_number }}-${{ github.sha }} -f mvn-project/Dockerfile
           mvn-project
       - name: Push DemoApp Image to GCR
-        run: >-
+        run: >
           docker push
           us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
           github.run_number }}-${{ github.sha }}
-      - name: Clone repo helm chart repo
-        uses: actions/checkout@v3
-        with:
-          repository: shantanu-da/helm-chart
-          ref: shantanu
-          path: temp_repo
-          token: ${{ secrets.GH_PAT || github.token }}
-      - name: Update Helm Chart Values
-        run: >
-          sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}/"
-          temp_repo/demo-app/values.yaml; \
+      - name: GitHub Actions
+        run: "${{ github.actor }} is testing out GitHub Actions \U0001F680"
+        permissions:
+          actions: write
+          checks: write
+          pull-requests: write
+          contents: read
+          packages: write
+        'on':
+          pull_request: null
+    setup_dependencies:
+      timeout-minutes: 120
+      runs-on: ubuntu-22.04
+      steps:
+        - name: Clone repo helm chart repo
+          uses: actions/checkout@v2
+          with:
+            repository: shantanu-da/helm-chart
+            ref: shantanu
+            path: temp_repo
+            token: '${{ secrets.GH_PAT }}'
+        - name: Update Helm Chart Values
+          run: >
+            sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}/"
+            temp_repo/demo-app/values.yaml; \
 
-          sed -i "91s/tag:.*/tag: mysql-${{ github.run_number }}-${{ github.sha
-          }}" temp_repo/demo-app/values.yaml; \
+            sed -i "91s/tag:.*/tag: mysql-${{ github.run_number }}-${{
+            github.sha }}" temp_repo/demo-app/values.yaml; \
 
-          cd temp_repo; \
+            cd temp_repo; \
 
-          git add .; \
+            git add .; \
 
-          git commit -m "Update image tag"; \
+            git commit -m "Update image tag"; \
 
-          git push origin shantanu
+            git push origin shantanu
