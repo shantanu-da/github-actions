@@ -7,7 +7,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
-      actions: write 
+      actions: write
       packages: write
       contents: read
     steps:
@@ -58,17 +58,22 @@ jobs:
           repository: shantanu-da/helm-chart
           ref: shantanu
           path: temp_repo
-          token: ${{ secrets.GH_PAT }}
+          token: '${{ secrets.GH_PAT }}'
       - name: Update Helm Chart Values
-        run: |
-          sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}" temp_repo/demo-app/values.yaml && \
-          sed -i "91s/tag:.*/tag: mysql-${{ github.run_number }}-${{ github.sha }}" temp_repo/demo-app/values.yaml && \
+        run: >
+          sed -i "11s/tag:.*/tag: ${{ github.run_number }}-${{ github.sha }}"
+          temp_repo/demo-app/values.yaml && \
+
+          sed -i "91s/tag:.*/tag: mysql-${{ github.run_number }}-${{ github.sha
+          }}" temp_repo/demo-app/values.yaml && \
+
           cd temp_repo && \
+
           git add . && \
+
           git commit -m "Update image tag" && \
+
           git push origin shantanu
-          shell: /usr/bin/bash -e {0}
+        shell: '/usr/bin/bash -e {0}'
         env:
           CLOUDSDK_METRICS_ENVIRONMENT: github-actions-setup-gcloud
-
-
