@@ -11,13 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Deployment
-        uses: actions/github-script@v5
-        with:
-          script: |
-            const workflowName = 'GKE Deployment';
-            const branchName = 'main';
-            const response = await github.workflow.createDispatch({
-              workflow_id: workflowName,
-              ref: branchName
-            });
-            console.log(`Deployment workflow triggered: ${response.status}`);
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.everest-preview+json" \
+            -H "Content-Type: application/json" \
+            https://api.github.com/repos/shantanu-da/helm-chart/dispatches \
+            --data '{"event_type": "deploy"}'
