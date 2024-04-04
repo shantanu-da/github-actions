@@ -14,12 +14,9 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const workflowName = 'CI/CD Pipeline';
+            const workflowName = 'GKE Deployment';
             const branchName = 'main';
-            const repo = github.repository;
-            const response = await github.actions.createWorkflowDispatch({
-              owner: repo.owner,
-              repo: repo.name,
+            const response = await github.workflow.createDispatch({
               workflow_id: workflowName,
               ref: branchName
             });
