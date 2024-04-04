@@ -1,0 +1,26 @@
+name: Trigger Deployment
+
+on:
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Deployment
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const workflowName = 'CI/CD Pipeline';
+            const branchName = 'main';
+            const repo = github.repository;
+            const response = await github.actions.createWorkflowDispatch({
+              owner: repo.owner,
+              repo: repo.name,
+              workflow_id: workflowName,
+              ref: branchName
+            });
+            console.log(`Deployment workflow triggered: ${response.status}`);
