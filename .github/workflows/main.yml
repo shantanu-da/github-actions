@@ -78,6 +78,5 @@ jobs:
 
           git push origin shantanu
           
-          apt update -y
         env:
           CLOUDSDK_METRICS_ENVIRONMENT: github-actions-setup-gcloud
