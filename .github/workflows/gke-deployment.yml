@@ -54,12 +54,12 @@ jobs:
       - name: Check if demo-app is already installed
         id: helm_status
         run: |
-          helm status demo-app || echo "::set-output name=status::not_installed"
+          helm status demo-app || echo "status=not_installed" >> $GITHUB_ENV
 
       - name: Install or Update demo-app chart
-        if: steps.helm_status.outputs.status == 'not_installed'
         run: |
-          helm install demo-app demo-app --namespace default --values demo-app/values.yaml
-          else:
-          run: |
-          helm upgrade demo-app demo-app --namespace default --values demo-app/values.yaml
+          if [[ "${{ steps.helm_status.outputs.status }}" == "not_installed" ]]; then
+            helm install demo-app demo-app --namespace default --values demo-app/values.yaml
+          else
+            helm upgrade demo-app demo-app --namespace default --values demo-app/values.yaml
+          fi
