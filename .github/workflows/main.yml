@@ -1,1 +1,83 @@
+name: CI/CD Pipeline
+'on':
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Clone mvn-project Repository
+        run: >-
+          git clone -b shantanu --single-branch
+          https://github.com/shantanu-da/mvn-project.git
+      - name: Build MySQL Image
+        run: >-
+          docker build -t
+          us-central1-docker.pkg.dev/learning-414204/demo/demo-app-mysql:${{
+          github.run_number }}-${{ github.sha }} -f mvn-project/Dockerfile.mysql
+          mvn-project
+      - name: Log in to GCR with GCP credentials
+        run: >-
+          gcloud auth activate-service-account
+          --key-file=mvn-project/gcp-key.json
+      - name: Install gcloud CLI
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          project_id: learning-414204
+          service_account_key: '${{ secrets.GCR_CREDENTIALS }}'
+      - name: Configure Docker for us-central1
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+      - name: Push MySQL Image to GCR
+        run: >-
+          docker push
+          us-central1-docker.pkg.dev/learning-414204/demo/demo-app-mysql:${{
+          github.run_number }}-${{ github.sha }}
+      - name: Build DemoApp Image
+        run: >-
+          docker build -t
+          us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
+          github.run_number }}-${{ github.sha }} -f mvn-project/Dockerfile
+          mvn-project
+      - name: Push DemoApp Image to GCR
+        run: >-
+          docker push
+          us-central1-docker.pkg.dev/learning-414204/demo/demo-app:${{
+          github.run_number }}-${{ github.sha }}
+      - name: Clone repo helm chart repo
+        uses: actions/checkout@v2
+        with:
+          repository: shantanu-da/helm-chart
+          ref: shantanu
+          path: temp_repo
+          token: '${{ secrets.GH_PAT }}'
+      - name: Set Git user identity
+        run: |
+          git config --global user.email "shantanu.datarkar@opstree.com"
+          git config --global user.name "shantanu-da"
+      
+      - name: Update Helm Chart Values
+        run: |
+          sed -i '/^ *image:/,/tag:/ s/^ *tag: .*/tag: ${{ github.run_number }}-${{ github.sha }}/' temp_repo/demo-app/values.yaml && \
+
+          sed -i '/^ *mysql:/,/tag:/ s/^ *tag: .*/tag: mysql-${{ github.run_number }}-${{ github.sha }}/' temp_repo/demo-app/values.yaml && \
+
+          cd temp_repo && \
+
+          git add . && \
+
+          git commit -m "Update image tag" && \
+
+          git push origin shantanu
+          
+        env:
+          CLOUDSDK_METRICS_ENVIRONMENT: github-actions-setup-gcloud
 
