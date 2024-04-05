@@ -58,6 +58,8 @@ jobs:
 
       - name: Install or Update demo-app chart
         if: steps.helm_status.outputs.status == 'not_installed'
-        run: helm install demo-app demo-app --namespace default --values demo-app/values.yaml
-        else
-        run: helm upgrade demo-app demo-app --namespace default --values demo-app/values.yaml
+        run: |
+          helm install demo-app demo-app --namespace default --values demo-app/values.yaml
+          else:
+          run: |
+          helm upgrade demo-app demo-app --namespace default --values demo-app/values.yaml
