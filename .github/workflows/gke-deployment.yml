@@ -18,10 +18,8 @@ jobs:
       - name: Clone Helm chart repository
         run: |
          git clone --branch shantanu https://${{ secrets.GH_PAT }}@github.com/shantanu-da/helm-chart.git temp
+         cd temp
       
-      - name: Navigate to temp folder
-        run: cd temp
-
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
