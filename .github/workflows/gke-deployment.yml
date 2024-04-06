@@ -18,6 +18,8 @@ jobs:
       
       - name: Clone Helm chart repository
         run: git clone https://github.com/shantanu-da/helm-chart.git temp
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Navigate to temp folder
         run: cd temp
