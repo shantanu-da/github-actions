@@ -11,16 +11,13 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      
+  
       - name: Clone Helm chart repository
         run: |
-          GIT_ASKPASS=echo git clone https://github.com/shantanu-da/helm-chart.git temp
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+         git clone https://${{ secrets.GH_PAT }}@github.com/shantanu-da/helm-chart.git temp
       
       - name: Navigate to temp folder
         run: cd temp
