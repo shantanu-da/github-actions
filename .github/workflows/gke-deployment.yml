@@ -20,6 +20,7 @@ jobs:
          git clone --branch shantanu https://${{ secrets.GH_PAT }}@github.com/shantanu-da/helm-chart.git temp
          cd temp
          ls -l  # Print the contents of the temp folder for verification
+         pwd
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
