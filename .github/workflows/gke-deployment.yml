@@ -28,17 +28,14 @@ jobs:
           terraform_version: 1.0.0
       
       - name: Terraform Initialization
-        run: cd /home/runner/work/github-actions/github-actions/temp
-             terraform init
-
+        run: terraform init ./temp
+             
       - name: Terraform Plan
-        run: cd /home/runner/work/github-actions/github-actions/temp
-              terraform plan
+        run:  terraform plan ./temp
       
       - name: Terraform apply
-        run: cd /home/runner/work/github-actions/github-actions/temp
-              terraform apply -auto-approve
-      
+        run:  terraform apply -auto-approve ./temp
+              
       - name: Configure Google Cloud credentials
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0.2.0 
         with:
