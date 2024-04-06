@@ -28,7 +28,8 @@ jobs:
           terraform_version: 1.0.0
       
       - name: Terraform Initialization
-        run: terraform init ./temp
+        run: pwd
+             terraform init ./temp
              
       - name: Terraform Plan
         run:  terraform plan ./temp
