@@ -17,7 +17,7 @@ jobs:
   
       - name: Clone Helm chart repository
         run: |
-         git clone https://${{ secrets.GH_PAT }}@github.com/shantanu-da/helm-chart.git temp
+         git clone --branch shantanu https://${{ secrets.GH_PAT }}@github.com/shantanu-da/helm-chart.git temp
       
       - name: Navigate to temp folder
         run: cd temp
