@@ -20,7 +20,7 @@ jobs:
         run: |
           GIT_ASKPASS=echo git clone https://github.com/shantanu-da/helm-chart.git temp
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       
       - name: Navigate to temp folder
         run: cd temp
