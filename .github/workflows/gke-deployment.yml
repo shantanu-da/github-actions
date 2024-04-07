@@ -41,7 +41,6 @@ jobs:
       - name: Terraform Plan
         run: |
              cd /home/runner/work/github-actions/github-actions/temp
-             gcloud auth application-default login
              terraform plan
       
       - name: Terraform apply
