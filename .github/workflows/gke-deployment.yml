@@ -41,7 +41,7 @@ jobs:
       - name: Activate Google Cloud service account
         run: |
              cd /home/runner/work/github-actions/github-actions/temp
-             gcloud auth activate-service-account --key-file=mvn-project/gcp-key.json
+             gcloud auth activate-service-account --key-file=helm-chart/gcp-key.json
              if [ $? -ne 0 ]; then
               echo "Failed to activate service account."
              exit 1
