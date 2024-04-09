@@ -33,11 +33,6 @@ jobs:
         with:
           terraform_version: 1.7.3
       
-      - name: Log in to GCR with GCP credentials
-        run: >-
-          gcloud auth activate-service-account
-          --key-file=helm-chart/gcp-key.json
-      
       - name: Install gcloud CLI
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
