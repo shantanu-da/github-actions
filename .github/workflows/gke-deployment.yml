@@ -20,14 +20,8 @@ jobs:
          git clone --branch shantanu https://${{ secrets.GH_PAT }}@github.com/shantanu-da/helm-chart.git temp
          cd temp
          ls -l  # Print the contents of the temp folder for verification
-         pwd
-        
-      - name: Configure Google Cloud credentials
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0.2.0 
-        with:
-          service_account_key: ${{ secrets.GCP_TERRAFORM_CREDS }}
-          project_id: ${{ env.PROJECT_ID }}
-
+         pwd  
+      
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -43,6 +37,12 @@ jobs:
         run: |
              cd  /home/runner/work/github-actions/github-actions/temp
              terraform init 
+      
+      - name: Configure Google Cloud credentials
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0.2.0 
+        with:
+          service_account_key: ${{ secrets.GCP_TERRAFORM_CREDS }}
+          project_id: ${{ env.PROJECT_ID }}
               
       - name: Terraform Plan
         run: |
