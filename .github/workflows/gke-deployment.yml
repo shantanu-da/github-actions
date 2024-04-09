@@ -44,11 +44,6 @@ jobs:
         with:
           service_account_key: ${{ secrets.GCP_TERRAFORM_CREDS }}
           project_id: ${{ env.PROJECT_ID }}
-              
-      - name: Terraform Plan
-        run: |
-             cd /home/runner/work/github-actions/github-actions/temp
-             terraform plan
       
       - name: Terraform apply
         run: |
