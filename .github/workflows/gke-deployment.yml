@@ -48,7 +48,7 @@ jobs:
       - name: Terraform apply
         run: |
              cd /home/runner/work/github-actions/github-actions/temp 
-             terraform apply -auto-approve 
+             terraform destroy -auto-approve 
 
       - name: Authenticate with GKE
         run: gcloud container clusters get-credentials us-central1-gke --region us-central1 --project ${{ env.PROJECT_ID }}
