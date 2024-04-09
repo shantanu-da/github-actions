@@ -33,6 +33,9 @@ jobs:
         with:
           terraform_version: 1.7.3
       
+      - name: Authenticate with Google Cloud
+        run: gcloud auth activate-service-account --key-file=${{ secrets.GCP_TERRAFORM_CREDS }}
+      
       - name: Terraform Initialization
         run: |
              cd  /home/runner/work/github-actions/github-actions/temp
