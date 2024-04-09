@@ -36,7 +36,7 @@ jobs:
       - name: Log in to GCR with GCP credentials
         run: >-
           gcloud auth activate-service-account
-          --key-file=mvn-project/gcp-key.json
+          --key-file=helm-chart/gcp-key.json
       
       - name: Install gcloud CLI
         uses: google-github-actions/setup-gcloud@v0.2.0
