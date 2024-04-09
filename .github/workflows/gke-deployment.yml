@@ -21,6 +21,8 @@ jobs:
          cd temp
          ls -l  # Print the contents of the temp folder for verification
          pwd
+         gcloud auth activate-service-account --key-file=helm-chart/*.json
+
         
       - name: Configure Google Cloud credentials
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0.2.0 
@@ -38,14 +40,7 @@ jobs:
              cd  /home/runner/work/github-actions/github-actions/temp
              terraform init 
              
-      - name: Activate Google Cloud service account
-        run: |
-             cd /home/runner/work/github-actions/github-actions/temp
-             gcloud auth activate-service-account --key-file=helm-chart/*.json
-             if [ $? -ne 0 ]; then
-              echo "Failed to activate service account."
-             exit 1
-              fi
+      
               
       - name: Terraform Plan
         run: |
