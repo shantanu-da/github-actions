@@ -33,9 +33,17 @@ jobs:
         with:
           terraform_version: 1.7.3
       
-      - name: Authenticate with Google Cloud
-        run: gcloud auth activate-service-account --key-file=${{ secrets.GCP_TERRAFORM_CREDS }}
+      - name: Log in to GCR with GCP credentials
+        run: >-
+          gcloud auth activate-service-account
+          --key-file=mvn-project/gcp-key.json
       
+      - name: Install gcloud CLI
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          project_id: learning-414204
+          service_account_key: '${{ secrets.GCR_CREDENTIALS }}'
+    
       - name: Terraform Initialization
         run: |
              cd  /home/runner/work/github-actions/github-actions/temp
